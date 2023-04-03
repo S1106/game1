@@ -6,12 +6,10 @@ export default function MenuButton() {
     
     const {setModal,button,setButton} = useContext(global);
 
-    // console.log(button);
-
     if(button) {
     return(
         <div className="button">
-            <button onClick={() => {setModal(true); setButton(null);}}>Рівень</button>
+            <button onClick={() => {setModal(true); setButton(null);}}><span>Рівень</span></button>
         </div>
     );
     } else {

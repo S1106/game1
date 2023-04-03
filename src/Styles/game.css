@@ -4,6 +4,7 @@
     box-sizing: border-box;
 }
 
+
 html,#root {
     height: 100%;
     position:relative;
@@ -15,39 +16,69 @@ html,#root {
     margin: 30px auto;
 } 
 
-.field_one {
+.field {
     display: flex;
     justify-content: space-between;
-    width: 90%;
-    height: 80vh;
-    margin: 0 auto;
+    width: 100%;
+    height: 330px;
+    margin: 30px auto;
 }
 
 .field_left , .field_right {
-    flex-basis: 80vh;
+    flex-basis: 330px;
     display: grid;
     grid-gap: 10px;
     
 }
 
-.field_2 {
+.field_one {
+    /* grid-template-columns:repeat(auto-fit, minmax(500px, 1fr)); */
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
 
 }
 
-.field_3 {
+.field_two {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
 
 }
 
-.field_4 {
+.field_three {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
 
 }
 
 .field_piece {
-    background-color: #ccf;
+    background-color: #face00;
 }
+
+.right__card {
+    width: 100%;
+    height: 100%;
+}
+
+.piece {
+    width:100%;
+    height: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        width: 760px;
+        height: 420px;
+    }
+}
+
+
+@media screen and (max-width: 540px) {
+    .field {
+        flex-direction: column;
+        width: 330px;
+        height: 700px;
+    }
+
+    .field_left , .field_right {
+        flex-basis: 800px; }
+} 

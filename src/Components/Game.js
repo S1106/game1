@@ -2,78 +2,136 @@ import React, { useContext , useState } from "react";
 import "../Styles/game.css";
 import "../images/logo1.svg";
 import { global } from "./Context";
+import Timer from "./Timer";
 
 export default function Game() {
     
-    const {setLevel,level,array} = useContext(global);
+    const {level,pic01,lev,setLev,arrRight,setArrRight} = useContext(global);
 
-    // const [cardList,setCardList] = useState([
-       
-    // ]);
+    const [finalElem,setFinalElem] = useState(null);
 
     const [currentElem,setCurrentElem] = useState(null);
+
+    const [area,setArea] = useState(null);
 
     const generateField = (t) => {
         return (
             `${t} field_${level}`
         )
     }
-
-    function dragStartHandler(e,elem) {
+    
+    function dragStartHandler(e,elem,c) {
         setCurrentElem(elem);
+        setArea(c);
     }
 
-    function dragOverHandler(e) {
+    function dragOverHandler(e,elem) {
         e.preventDefault();
-        e.target.style.background = '#fff';
+        setFinalElem(elem);
     }
 
+    function dragLeaveHandler(e) {
+        
+    }
+    
     function dragEndHandler(e) {
-        e.target.style.background = '#ccf';
+
     }
 
     function dropHandler(e,elem) {
         e.preventDefault();
 
-        // setCardList(cardList.map(c => {
-        //     if(c.id === elem.id) {
-        //         return {...c, order: currentElem.order}
-        //     }
+        if(area === 'field_left'){
 
-        //     if(c.id === currentElem.id) {
-        //         return {...c, order: elem.order}
-        //     }
+            e.target.style.backgroundImage = `url(${pic01})`;
+            e.target.style.backgroundPosition = `${currentElem.left}px ${currentElem.top}px`;
 
-        //     return c;
-        // }))
+            ////////////////////////перебор левого масива при событии ondrop///////////////////////////////
+
+            let c = lev.map(elem => {
+                //console.log(elem.id, currentElem.id);
+                if(elem.id !== currentElem.id) {
+                    return {id: elem.id, order: elem.order, top:elem.top , left:elem.left}
+                } else{
+                    return {id: elem.id}               
+                }
+            })
+            setLev(c);
+
+            ////////////////////////перебор правого масива при событии ondrop///////////////////////////////
+
+            let b = arrRight.map((item) => {
+                if(item.id === currentElem.id) {
+                    return {id: item.id, order: currentElem.order, top:currentElem.top , left:currentElem.left}
+                }   else {
+                    return {...item}
+                }
+            });
+            setArrRight(b);
+            
+            console.log(c);
+            console.log(b);
+        }
+
+
+
+        if(area === 'field_right') {
+            let b = arrRight.map((item) => {
+
+                if(item.id === currentElem.id) {
+                    return {id: item.id, order: finalElem.order, top:finalElem.top , left:finalElem.left}
+                }
+
+                if(item.id === finalElem.id) {
+                    return {id: item.id, order: currentElem.order, top:currentElem.top , left:currentElem.left}
+                } 
+
+            });
+            setArrRight(b)
+        }
     }
 
-    console.log(level)
 
     if(level) {
         return (
-        <div className="field_one">
+        <div className="field">
             <div className = {generateField('field_left')}>
-                {array.map(elem => 
-                <div 
-                    onDragStart={(e) => dragStartHandler(e,elem)}
-                    onDragLeave={(e) => dragEndHandler(e)}
-                    onDragEnd={(e) => dragEndHandler(e)}
-                    onDragOver={(e) => dragOverHandler(e)}
-                    onDrop={(e) => dropHandler(e,elem)}
-                    draggable ={true}
-                    key = {Date.now() } className="field_piece">{elem}</div>)}
+                {lev.map((elem,index) => 
+                <div className="field_piece" key = {index} style = {{order: elem.order}}>
+                   {elem.order === null ? null : (
+                        <div 
+                        className="piece"
+                        onDragStart={(e) => dragStartHandler(e,elem, 'field_left')}
+                        onDragLeave={(e) => dragLeaveHandler(e)}
+                        //onDragEnd={(e) => dragEndHandler(e)}
+                        //onDragOver={(e) => dragOverHandler(e)}
+                        //onDrop={(e) => dropHandler(e,elem)}
+                        draggable={true} 
+                        style = {{
+                            backgroundImage:`url(${pic01})`,
+                            backgroundPosition: `${elem.left}px ${elem.top}px`,
+                        }}
+                    ></div>
+                    )}       
+                </div>
+                )}
+
+             
+                
             </div>
+            <Timer />
             <div className = {generateField('field_right')}>
-                {array.map(elem => 
-                <div 
-                    onDragStart={(e) => dragStartHandler(e,elem)}
-                    onDragLeave={(e) => dragEndHandler(e)}
-                    onDragEnd={(e) => dragEndHandler(e)}
-                    onDragOver={(e) => dragOverHandler(e)}
-                    onDrop={(e) => dropHandler(e,elem)}
-                    draggable={true} 
-                    key = {Date.now() } className="field_piece"></div>)}
+                {arrRight.map((elem,index) => 
+                <div className="field_piece" key = {index}>
+                        <div className="right__card"
+                            onDragStart={(e) => dragStartHandler(e,elem, 'field_right')}
+                            onDragLeave={(e) => dragEndHandler(e)}
+                            onDragEnd={(e) => dragEndHandler(e)}
+                            onDragOver={(e) => dragOverHandler(e,elem)}
+                            onDrop={(e) => dropHandler(e,elem)}
+                            draggable={true} 
+                            ></div>
+                    </div>)}
             </div>
         </div>
         );
@@ -82,11 +140,26 @@ export default function Game() {
 
     return(
         <div className="gamefield">
-            <div className="logo">
+            <div className="logo">  
                 <img src="../images/logo1.svg" alt=""></img>
             </div>
-            <p>Join us on <br/>www.simulator.com.ua<br/><br/></p>
+            <p className="focus">Join us on <br/>www.simulator.com.ua<br/><br/></p>
         </div>
     );
 }
 }
+
+
+// const left = [
+//     {id:1, order: 3, top:1, left:4},
+//     {id:2, },
+//     {id:3,},
+//     {id:4, order: 0, top:4, left:1}
+// ];
+
+// const right = [
+//     {id:1, order: 1, top:2, left:3},
+//     {id:2, order: 2, top:3, left:2},
+//     {id:3},
+//     {id:4}
+// ]
