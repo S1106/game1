@@ -11,7 +11,7 @@ export default function Context(props) {
 
     const [level,setLevel] = React.useState(null); // 2 = 4 or 3 = 9 or 4 = 16
 
-    const [pic01,lev,setLev,arrRight,setArrRight] = useArray(level);
+    const [pic01,lev,setLev,arrRight,setArrRight,levels] = useArray(level);
 
     const [timer,setTimer] = useState(0);
 
@@ -65,7 +65,8 @@ export default function Context(props) {
         arrRight,
         setArrRight,
         timer,
-        timerHour
+        timerHour,
+        levels
     }
 
     return (

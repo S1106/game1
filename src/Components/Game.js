@@ -6,7 +6,7 @@ import Timer from "./Timer";
 
 export default function Game() {
     
-    const {level,pic01,lev,setLev,arrRight,setArrRight} = useContext(global);
+    const {level,pic01,lev,setLev,arrRight,setArrRight,levels} = useContext(global);
 
     const [finalElem,setFinalElem] = useState(null);
 
@@ -48,13 +48,20 @@ export default function Game() {
 
             ////////////////////////перебор левого масива при событии ondrop///////////////////////////////
 
-            let c = lev.map(elem => {
-                //console.log(elem.id, currentElem.id);
+            // let c = lev.map(elem => {
+            //     //console.log(elem.id, currentElem.id);
+            //     if(elem.id !== currentElem.id) {
+            //         return {id: elem.id, order: elem.order, top:elem.top , left:elem.left}
+            //     } else{
+            //         return {id: elem.id}               
+            //     }
+            // })
+            // setLev(c);
+
+            let c = lev.filter(elem => {
                 if(elem.id !== currentElem.id) {
                     return {id: elem.id, order: elem.order, top:elem.top , left:elem.left}
-                } else{
-                    return {id: elem.id}               
-                }
+                } 
             })
             setLev(c);
 
@@ -68,12 +75,38 @@ export default function Game() {
                 }
             });
             setArrRight(b);
-            
+
+            // let etalon = [
+            //     { id: 0, left: 0, top:0},
+            //     { id: 1, left: -166.84, top:0},
+            //     { id: 2, left: 0, top: -166.84},
+            //     { id: 3, left: -166.84, top:-166.84}
+            // ]
+////////////////////////////////////////////////////////////////////////
+
+            if(arrRight[0].id === levels.one[0].id && arrRight[1].id === levels.one[1].id && arrRight[2].id === levels.one[2].id && arrRight[3].id === levels.one[3].id && arrRight[0].top === levels.one[0].top && arrRight[1].top === levels.one[1].top && arrRight[2].top === levels.one[2].top)
+                {
+                console.log('OOOOOoooooo')
+            } else {
+                console.log('no')
+            }
+
+
+            // arrRight.forEach((item) => {
+            //     etalon.forEach((item2) => {
+            //         if(item.id == item2.id && item.top == item2.top) {
+            //             console.log('OOOOOoooooo')
+            //                 } else {
+            //                     console.log('no')
+            //                 }
+            //         }
+            //     });
+            // });
+///////////////////////////////////////////////////////////////////////////////
             console.log(c);
             console.log(b);
+
         }
-
-
 
         if(area === 'field_right') {
             let b = arrRight.map((item) => {
@@ -90,7 +123,6 @@ export default function Game() {
             setArrRight(b)
         }
     }
-
 
     if(level) {
         return (

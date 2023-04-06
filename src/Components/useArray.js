@@ -126,7 +126,7 @@ export default function useArray(l) {
         
     }, [mass]);
 
-    return [pic01, lev,setLev,arrRight,setArrRight];
+    return [pic01, lev,setLev,arrRight,setArrRight,levels];
 }
 
 
