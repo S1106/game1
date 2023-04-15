@@ -76,7 +76,7 @@ html,#root {
     .field {
         flex-direction: column;
         width: 330px;
-        height: 700px;
+        height: 800px;
     }
 
     .field_left , .field_right {

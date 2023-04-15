@@ -4,21 +4,21 @@ import "../Styles/global.css";
 
 export default function Timer() {
 
-    const {timer,timerHour} = useContext(global);
+    const {timer,timerHour,resultCount} = useContext(global);
     
     return(
         <div className="timer">{
            `${timerHour.toString().padStart(2, '0')}:${timer.toString().padStart(2, '0')}` 
         }
-        
-            <p className="naviDescription">Navihation</p>
             <div className="navi">
                 <div className="container">
                     <a href="#">Contacts</a>
                     <a href="#">Partnership</a>
                     <a href="#">Pricelist</a>
+                    <p className="naviDescription">Navihation</p>
                 </div>
             </div>
+            <div className="resultCount">{resultCount}</div>
         </div>
 
         

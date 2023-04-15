@@ -94,6 +94,11 @@ button:hover {
     text-align: center;
     line-height: 50px;
     margin: 10px;
+    /* box-shadow: 1px 1px 0 #000 inset, -1px -1px 0 #000 inset; */
+}
+
+.resultCount {
+    color: #fff!important;
 }
 
 @media screen and (max-width: 540px) {
@@ -105,26 +110,28 @@ button:hover {
         line-height: 15px;
     }
 
+    .resultCount {
+        margin-top: -150px;
+        color: #fff!important;
+        font-size: 16px!important;
+        line-height: 16px!important;
+    }
+
 }
-
-
-
 
 
 .navi {
     overflow: hidden;
     position: relative;
-    height: 200px;
+    height: 210px;
 }
 
 .container {
     display: flex;
     flex-direction: column;
-    
     background-color: #face00;
-    transform: translateY(-90%);
+    transform: translateY(-75%);
     transition: 1s transform;
-
 }
 
 .container:hover ,
@@ -143,8 +150,20 @@ a {
     padding: 0 0 0 0;
     font-size: 18px;
     background-color: #face00;
-    border-bottom: 1px solid #000;
     cursor: none;
-    margin-top: 10px;
     color: #000;
+}
+
+.resultCount {
+    color: rgb(52, 52, 68);
+    font-family: 'Lobster', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    height: 50px;
+    text-align: center;
+    line-height: 25px;
+    text-shadow: 0 5px 15px #a23b3b;
+    /* background-color: #face00;
+    border: 3px solid #ff0000;
+    box-shadow: 0 0 20px 5px #a23b3b ; */
 }

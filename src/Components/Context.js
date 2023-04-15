@@ -16,6 +16,10 @@ export default function Context(props) {
     const [timer,setTimer] = useState(0);
 
     const [timerHour,setTimerHour] = useState(0);
+
+    const [resultCount,setResultCount] = useState(null);
+
+    const [currentElem,setCurrentElem] = useState(null);
     
    /////////////////////////BUTTON HIDE - SHOW////////////////////////////////////
     const buttonHide = function() {
@@ -32,21 +36,21 @@ export default function Context(props) {
         }
     }
   ///////////////////////TIMER//////////////////////////////////
-        useEffect(() => {
-            const interval = setInterval(() => {
-                level &&
-                    setTimer(timer => timer >= 0 && timer <59 ? timer + 1 : 0)
-            }, 1000);
-            return () => { clearInterval(interval) }
-        }, [level]);
+        // useEffect(() => {
+        //     const interval = setInterval(() => {
+        //         currentElem &&
+        //             setTimer(timer => timer >= 0 && timer <59 ? timer + 1 : 0)
+        //     }, 1000);
+        //     return () => { clearInterval(interval) }
+        // }, [currentElem]);
 
-        useEffect(() => {
-            const interval = setInterval(() => {
-                level &&
-                    setTimerHour(timerHour => timerHour >= 0 ? timerHour + 1 : 0)
-            }, 60000);
-            return () => { clearInterval(interval) }
-        }, [level]);
+        // useEffect(() => {
+        //     const interval = setInterval(() => {
+        //         currentElem &&
+        //             setTimerHour(timerHour => timerHour >= 0 ? timerHour + 1 : 0)
+        //     }, 60000);
+        //     return () => { clearInterval(interval) }
+        // }, [currentElem]);
     
 //////////////////////VALUE///////////////////////////////
     let value = {
@@ -66,7 +70,13 @@ export default function Context(props) {
         setArrRight,
         timer,
         timerHour,
-        levels
+        levels,
+        setResultCount,
+        resultCount,
+        currentElem,
+        setCurrentElem,
+        setTimer,
+        setTimerHour
     }
 
     return (

@@ -1,4 +1,4 @@
-import React, { useContext , useState } from "react";
+import React, { useContext , useEffect, useState } from "react";
 import "../Styles/game.css";
 import "../images/logo1.svg";
 import { global } from "./Context";
@@ -6,13 +6,13 @@ import Timer from "./Timer";
 
 export default function Game() {
     
-    const {level,pic01,lev,setLev,arrRight,setArrRight,levels} = useContext(global);
+    const {level,pic01,lev,setLev,arrRight,setArrRight,timer,timerHour,levels,setResultCount,resultCount,currentElem,setCurrentElem} = useContext(global);
 
     const [finalElem,setFinalElem] = useState(null);
 
-    const [currentElem,setCurrentElem] = useState(null);
-
     const [area,setArea] = useState(null);
+
+    const [compare,setCompare] = useState(null);
 
     const generateField = (t) => {
         return (
@@ -28,8 +28,33 @@ export default function Game() {
     function dragOverHandler(e,elem) {
         e.preventDefault();
         setFinalElem(elem);
-    }
 
+        if(area === 'field_right') {
+            
+            let b = arrRight.map(item => {
+
+                console.log(finalElem)
+                console.log(currentElem)
+
+                if(item.order === null) {
+                    return item } else {
+
+                if(item.id === currentElem.id) {
+                    return {id: item.id, order: finalElem.order, top:finalElem.top , left:finalElem.left}
+                }
+
+                if(item.id === finalElem.id) {
+                    return {id: item.id, order: currentElem.order, top:currentElem.top , left:currentElem.left}
+                } 
+            }
+
+            });
+            
+            setArrRight(b);
+        }
+
+    }
+        console.log(finalElem)
     function dragLeaveHandler(e) {
         
     }
@@ -40,14 +65,13 @@ export default function Game() {
 
     function dropHandler(e,elem) {
         e.preventDefault();
-
+        
         if(area === 'field_left'){
 
             e.target.style.backgroundImage = `url(${pic01})`;
             e.target.style.backgroundPosition = `${currentElem.left}px ${currentElem.top}px`;
 
             ////////////////////////перебор левого масива при событии ondrop///////////////////////////////
-
             // let c = lev.map(elem => {
             //     //console.log(elem.id, currentElem.id);
             //     if(elem.id !== currentElem.id) {
@@ -57,6 +81,8 @@ export default function Game() {
             //     }
             // })
             // setLev(c);
+
+            ////////////////////////удаление текущего взятого елемента///////////////////////////////
 
             let c = lev.filter(elem => {
                 if(elem.id !== currentElem.id) {
@@ -69,60 +95,56 @@ export default function Game() {
 
             let b = arrRight.map((item) => {
                 if(item.id === currentElem.id) {
-                    return {id: item.id, order: currentElem.order, top:currentElem.top , left:currentElem.left}
+                    return {id: item.id, order: finalElem.id, top:currentElem.top , left:currentElem.left}
                 }   else {
                     return {...item}
                 }
             });
             setArrRight(b);
 
-            // let etalon = [
-            //     { id: 0, left: 0, top:0},
-            //     { id: 1, left: -166.84, top:0},
-            //     { id: 2, left: 0, top: -166.84},
-            //     { id: 3, left: -166.84, top:-166.84}
-            // ]
-////////////////////////////////////////////////////////////////////////
-
-            if(arrRight[0].id === levels.one[0].id && arrRight[1].id === levels.one[1].id && arrRight[2].id === levels.one[2].id && arrRight[3].id === levels.one[3].id && arrRight[0].top === levels.one[0].top && arrRight[1].top === levels.one[1].top && arrRight[2].top === levels.one[2].top)
-                {
-                console.log('OOOOOoooooo')
-            } else {
-                console.log('no')
-            }
-
-
-            // arrRight.forEach((item) => {
-            //     etalon.forEach((item2) => {
-            //         if(item.id == item2.id && item.top == item2.top) {
-            //             console.log('OOOOOoooooo')
-            //                 } else {
-            //                     console.log('no')
-            //                 }
-            //         }
-            //     });
-            // });
-///////////////////////////////////////////////////////////////////////////////
-            console.log(c);
-            console.log(b);
-
         }
 
         if(area === 'field_right') {
-            let b = arrRight.map((item) => {
+            
+            let b = arrRight.map(item => {
+                console.log(currentElem)
+                console.log(finalElem)
+                console.log(arrRight)
 
-                if(item.id === currentElem.id) {
-                    return {id: item.id, order: finalElem.order, top:finalElem.top , left:finalElem.left}
-                }
+                // if(item.id === currentElem.id) {
+                //     return {id: item.id, order: finalElem.order, top:finalElem.top , left:finalElem.left}
+                // }
 
-                if(item.id === finalElem.id) {
-                    return {id: item.id, order: currentElem.order, top:currentElem.top , left:currentElem.left}
-                } 
+                // if(item.id === finalElem.id) {
+                //     return {id: item.id, order: currentElem.order, top:currentElem.top , left:currentElem.left}
+                // } 
 
             });
-            setArrRight(b)
+            
+            setArrRight(b);
         }
+
+
     }
+
+    ///////////////////////////////////////Сравнение массивов//////////////////////////////
+
+    useEffect(() => {
+        let compareMass = arrRight.every(elem => {
+            return elem.id === elem.order
+        });
+            setCompare(compareMass);
+    },[arrRight]);
+
+    useEffect(() => {
+        let StringResult = null;
+        if(compare === true) {
+            StringResult = `Your time is ${timerHour.toString().padStart(2, '0')}:${timer.toString().padStart(2, '0')}`;
+        } 
+        setResultCount(StringResult);
+    },[compare])
+
+    //console.log(compare)
 
     if(level) {
         return (
@@ -135,9 +157,9 @@ export default function Game() {
                         className="piece"
                         onDragStart={(e) => dragStartHandler(e,elem, 'field_left')}
                         onDragLeave={(e) => dragLeaveHandler(e)}
-                        //onDragEnd={(e) => dragEndHandler(e)}
-                        //onDragOver={(e) => dragOverHandler(e)}
-                        //onDrop={(e) => dropHandler(e,elem)}
+                            //onDragEnd={(e) => dragEndHandler(e)}
+                            //onDragOver={(e) => dragOverHandler(e)}
+                            //onDrop={(e) => dropHandler(e,elem)}
                         draggable={true} 
                         style = {{
                             backgroundImage:`url(${pic01})`,
@@ -147,9 +169,6 @@ export default function Game() {
                     )}       
                 </div>
                 )}
-
-             
-                
             </div>
             <Timer />
             <div className = {generateField('field_right')}>
@@ -157,11 +176,11 @@ export default function Game() {
                 <div className="field_piece" key = {index}>
                         <div className="right__card"
                             onDragStart={(e) => dragStartHandler(e,elem, 'field_right')}
-                            onDragLeave={(e) => dragEndHandler(e)}
+                            onDragLeave={(e) => dragLeaveHandler(e)}
                             onDragEnd={(e) => dragEndHandler(e)}
                             onDragOver={(e) => dragOverHandler(e,elem)}
                             onDrop={(e) => dropHandler(e,elem)}
-                            draggable={true} 
+                            draggable={true}
                             ></div>
                     </div>)}
             </div>
@@ -180,18 +199,3 @@ export default function Game() {
     );
 }
 }
-
-
-// const left = [
-//     {id:1, order: 3, top:1, left:4},
-//     {id:2, },
-//     {id:3,},
-//     {id:4, order: 0, top:4, left:1}
-// ];
-
-// const right = [
-//     {id:1, order: 1, top:2, left:3},
-//     {id:2, order: 2, top:3, left:2},
-//     {id:3},
-//     {id:4}
-// ]
