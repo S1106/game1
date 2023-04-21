@@ -20,10 +20,9 @@ export default function Timer() {
             </div>
             <div className="resultCount">{resultCount}</div>
         </div>
-
-        
     );
 }
+
 
 
         // setInterval(() => {

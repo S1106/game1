@@ -20,8 +20,14 @@ export default function Context(props) {
     const [resultCount,setResultCount] = useState(null);
 
     const [currentElem,setCurrentElem] = useState(null);
-    
+
+    const [compare,setCompare] = useState(null);
+
+    // const [timerActive,setTimerActive] = useState(true);
+
+
    /////////////////////////BUTTON HIDE - SHOW////////////////////////////////////
+
     const buttonHide = function() {
         setModal(true);
         setButton(null);
@@ -35,22 +41,26 @@ export default function Context(props) {
             setButton(null);
         }
     }
-  ///////////////////////TIMER//////////////////////////////////
-        // useEffect(() => {
-        //     const interval = setInterval(() => {
-        //         currentElem &&
-        //             setTimer(timer => timer >= 0 && timer <59 ? timer + 1 : 0)
-        //     }, 1000);
-        //     return () => { clearInterval(interval) }
-        // }, [currentElem]);
+  /////////////////////TIMER//////////////////////////////////
 
-        // useEffect(() => {
-        //     const interval = setInterval(() => {
-        //         currentElem &&
-        //             setTimerHour(timerHour => timerHour >= 0 ? timerHour + 1 : 0)
-        //     }, 60000);
-        //     return () => { clearInterval(interval) }
-        // }, [currentElem]);
+        useEffect(() => {
+            var interval = setInterval(() => {
+                currentElem &&
+                    setTimer(timer => timer >= 0 && timer <59 ? timer + 1 : 0)
+            }, 1000);
+            return () => { clearInterval(interval) }
+
+        }, [currentElem]);
+
+
+        useEffect(() => {
+            const interval = setInterval(() => {
+                currentElem &&
+                    setTimerHour(timerHour => timerHour >= 0 ? timerHour + 1 : 0)
+            }, 60000);
+            return () => { clearInterval(interval) }
+        }, [currentElem]);
+
     
 //////////////////////VALUE///////////////////////////////
     let value = {
@@ -58,7 +68,6 @@ export default function Context(props) {
         setModal,
         setLevel,
         level,
-        
         setButton,
         button,
         buttonHide ,
@@ -76,7 +85,9 @@ export default function Context(props) {
         currentElem,
         setCurrentElem,
         setTimer,
-        setTimerHour
+        setTimerHour,
+        compare,
+        setCompare
     }
 
     return (

@@ -3,16 +3,15 @@ import "../Styles/game.css";
 import "../images/logo1.svg";
 import { global } from "./Context";
 import Timer from "./Timer";
+import FieldRight from "./FieldRight";
 
 export default function Game() {
     
-    const {level,pic01,lev,setLev,arrRight,setArrRight,timer,timerHour,levels,setResultCount,resultCount,currentElem,setCurrentElem} = useContext(global);
+    const {level,pic01,lev,setLev,arrRight,setArrRight,timer,timerHour,levels,setResultCount,resultCount,currentElem,setCurrentElem,compare,setCompare} = useContext(global);
 
     const [finalElem,setFinalElem] = useState(null);
 
     const [area,setArea] = useState(null);
-
-    const [compare,setCompare] = useState(null);
 
     const generateField = (t) => {
         return (
@@ -54,7 +53,7 @@ export default function Game() {
         }
 
     }
-        console.log(finalElem)
+        // console.log(finalElem)
     function dragLeaveHandler(e) {
         
     }
@@ -100,24 +99,24 @@ export default function Game() {
                     return {...item}
                 }
             });
+            
             setArrRight(b);
-
         }
 
         if(area === 'field_right') {
             
             let b = arrRight.map(item => {
-                console.log(currentElem)
-                console.log(finalElem)
-                console.log(arrRight)
+                // console.log(currentElem)
+                // console.log(finalElem)
+                // console.log(arrRight)
 
-                // if(item.id === currentElem.id) {
-                //     return {id: item.id, order: finalElem.order, top:finalElem.top , left:finalElem.left}
-                // }
+                if(item.id === currentElem.id) {
+                    return {id: item.id, order: finalElem.order, top:finalElem.top , left:finalElem.left}
+                }
 
-                // if(item.id === finalElem.id) {
-                //     return {id: item.id, order: currentElem.order, top:currentElem.top , left:currentElem.left}
-                // } 
+                if(item.id === finalElem.id) {
+                    return {id: item.id, order: currentElem.order, top:currentElem.top , left:currentElem.left}
+                } 
 
             });
             
@@ -142,10 +141,10 @@ export default function Game() {
             StringResult = `Your time is ${timerHour.toString().padStart(2, '0')}:${timer.toString().padStart(2, '0')}`;
         } 
         setResultCount(StringResult);
+        setCurrentElem(null);
     },[compare])
 
-    //console.log(compare)
-
+   console.log(arrRight)
     if(level) {
         return (
         <div className="field">
@@ -173,16 +172,11 @@ export default function Game() {
             <Timer />
             <div className = {generateField('field_right')}>
                 {arrRight.map((elem,index) => 
-                <div className="field_piece" key = {index}>
-                        <div className="right__card"
-                            onDragStart={(e) => dragStartHandler(e,elem, 'field_right')}
-                            onDragLeave={(e) => dragLeaveHandler(e)}
-                            onDragEnd={(e) => dragEndHandler(e)}
-                            onDragOver={(e) => dragOverHandler(e,elem)}
-                            onDrop={(e) => dropHandler(e,elem)}
-                            draggable={true}
-                            ></div>
-                    </div>)}
+                        <div className="field_piece" key = {index} onDragOver={(e) => dragOverHandler(e,elem)}
+                        onDrop={(e) => dropHandler(e,elem)}>
+                            <FieldRight elem={elem} dragStartHandler={dragStartHandler} dragLeaveHandler={dragLeaveHandler} dragEndHandler={dragEndHandler} dragOverHandler={dragOverHandler} dropHandler={dropHandler}/>
+                        </div>)
+                }
             </div>
         </div>
         );
