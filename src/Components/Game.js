@@ -4,22 +4,27 @@ import "../images/logo1.svg";
 import { global } from "./Context";
 import Timer from "./Timer";
 import FieldRight from "./FieldRight";
+import FieldLeft from "./FieldLeft";
 
 export default function Game() {
     
-    const {level,pic01,lev,setLev,arrRight,setArrRight,timer,timerHour,levels,setResultCount,resultCount,currentElem,setCurrentElem,compare,setCompare} = useContext(global);
+    const {level,pic01,lev,setLev,arrRight,setArrRight,timer,timerHour,levels,setResultCount,resultCount,currentElem,setCurrentElem,compare,setCompare,setWatch,watch,state} = useContext(global);
+
+    let start = null;
+    let end = null;
+    if (state !== undefined) {
+       start = state.start;
+       end = state.end;
+    }
+
+    // console.dir(start)
 
     const [finalElem,setFinalElem] = useState(null);
 
     const [area,setArea] = useState(null);
-
-    const generateField = (t) => {
-        return (
-            `${t} field_${level}`
-        )
-    }
     
     function dragStartHandler(e,elem,c) {
+        setWatch(elem);
         setCurrentElem(elem);
         setArea(c);
     }
@@ -66,9 +71,13 @@ export default function Game() {
         e.preventDefault();
         
         if(area === 'field_left'){
+            if(elem.id === finalElem.id) {
+                e.target.style.backgroundImage = `url(${pic01})`;
+                e.target.style.backgroundPosition = `${currentElem.left}px ${currentElem.top}px`;
+            } else {
+                return;
+            }
 
-            e.target.style.backgroundImage = `url(${pic01})`;
-            e.target.style.backgroundPosition = `${currentElem.left}px ${currentElem.top}px`;
 
             ////////////////////////перебор левого масива при событии ondrop///////////////////////////////
             // let c = lev.map(elem => {
@@ -141,55 +150,28 @@ export default function Game() {
             StringResult = `Your time is ${timerHour.toString().padStart(2, '0')}:${timer.toString().padStart(2, '0')}`;
         } 
         setResultCount(StringResult);
-        setCurrentElem(null);
+        setWatch(null);
     },[compare])
 
-   console.log(arrRight)
+    // console.log(arrRight)
+    // console.log(watch);
+    
     if(level) {
-        return (
-        <div className="field">
-            <div className = {generateField('field_left')}>
-                {lev.map((elem,index) => 
-                <div className="field_piece" key = {index} style = {{order: elem.order}}>
-                   {elem.order === null ? null : (
-                        <div 
-                        className="piece"
-                        onDragStart={(e) => dragStartHandler(e,elem, 'field_left')}
-                        onDragLeave={(e) => dragLeaveHandler(e)}
-                            //onDragEnd={(e) => dragEndHandler(e)}
-                            //onDragOver={(e) => dragOverHandler(e)}
-                            //onDrop={(e) => dropHandler(e,elem)}
-                        draggable={true} 
-                        style = {{
-                            backgroundImage:`url(${pic01})`,
-                            backgroundPosition: `${elem.left}px ${elem.top}px`,
-                        }}
-                    ></div>
-                    )}       
-                </div>
-                )}
+       return(
+            <div className="field">
+                <FieldLeft start={start}/>
+                <Timer />
+                <FieldRight end={end}/>
             </div>
-            <Timer />
-            <div className = {generateField('field_right')}>
-                {arrRight.map((elem,index) => 
-                        <div className="field_piece" key = {index} onDragOver={(e) => dragOverHandler(e,elem)}
-                        onDrop={(e) => dropHandler(e,elem)}>
-                            <FieldRight elem={elem} dragStartHandler={dragStartHandler} dragLeaveHandler={dragLeaveHandler} dragEndHandler={dragEndHandler} dragOverHandler={dragOverHandler} dropHandler={dropHandler}/>
-                        </div>)
-                }
-            </div>
-        </div>
-        );
-
+       )
     } else {
-
-    return(
-        <div className="gamefield">
-            <div className="logo">  
-                <img src="../images/logo1.svg" alt=""></img>
+        return(
+            <div className="gamefield">
+                <div className="logo">  
+                    <img src="../images/logo1.svg" alt=""></img>
+                </div>
+                <p className="focus">Join us on <br/>www.simulator.com.ua<br/><br/></p>
             </div>
-            <p className="focus">Join us on <br/>www.simulator.com.ua<br/><br/></p>
-        </div>
-    );
-}
+        );
+    }
 }

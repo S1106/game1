@@ -11,7 +11,7 @@ export default function Context(props) {
 
     const [level,setLevel] = React.useState(null); // 2 = 4 or 3 = 9 or 4 = 16
 
-    const [pic01,lev,setLev,arrRight,setArrRight,levels] = useArray(level);
+    const [pic01,lev,setLev,arrRight,setArrRight,levels,state,dispatch] = useArray(level);
 
     const [timer,setTimer] = useState(0);
 
@@ -23,8 +23,11 @@ export default function Context(props) {
 
     const [compare,setCompare] = useState(null);
 
+    const [watch,setWatch] = useState(null);
+
     // const [timerActive,setTimerActive] = useState(true);
 
+    //console.log(state)
 
    /////////////////////////BUTTON HIDE - SHOW////////////////////////////////////
 
@@ -45,21 +48,21 @@ export default function Context(props) {
 
         useEffect(() => {
             var interval = setInterval(() => {
-                currentElem &&
+                watch &&
                     setTimer(timer => timer >= 0 && timer <59 ? timer + 1 : 0)
             }, 1000);
             return () => { clearInterval(interval) }
 
-        }, [currentElem]);
+        }, [watch]);
 
 
         useEffect(() => {
             const interval = setInterval(() => {
-                currentElem &&
+                watch &&
                     setTimerHour(timerHour => timerHour >= 0 ? timerHour + 1 : 0)
             }, 60000);
             return () => { clearInterval(interval) }
-        }, [currentElem]);
+        }, [watch]);
 
     
 //////////////////////VALUE///////////////////////////////
@@ -87,7 +90,10 @@ export default function Context(props) {
         setTimer,
         setTimerHour,
         compare,
-        setCompare
+        setCompare,
+        setWatch,
+        watch,
+        state
     }
 
     return (

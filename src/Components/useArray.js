@@ -1,9 +1,9 @@
-import { useState , useEffect } from "react";
+import { useState , useEffect , useReducer } from "react";
 import "../images/pic01.png";
 
 export default function useArray(l) {
 
-    const pic01 = "../images/pic01.png";
+    const pic01 = "../images/pic09.png";
 
     const [mass,setMass] = useState([]);
 
@@ -18,6 +18,20 @@ export default function useArray(l) {
     //     setWidthPic(wp);
     // },l)
 
+    const levels2 = {
+        one: {
+            start: [{ id: 0, left: 0, top:0},
+                    { id: 1, left: -166.84, top:0},
+                    { id: 2, left: 0, top: -166.84},
+                    { id: 3, left: -166.84, top:-166.84}],
+            end:   [
+                    { id: 0},
+                    { id: 1},
+                    { id: 2},
+                    { id: 3}]
+        }
+    }
+ 
     const levels = {
         one:[
             { id: 0, left: 0, top:0},
@@ -63,6 +77,38 @@ export default function useArray(l) {
         ],
     }
 
+    const reducer = (state,action) => {
+        switch(action.type){
+            case "DRAGGABLE" : {
+                return {...state}
+            }
+
+            case "DRAGGABLEREVERS" : {
+                return {...state}
+            }
+
+            case "SORTABLE" : {
+                return {...state}
+            }
+
+            case "FILL" : 
+                return action.payload;
+                // const start = levels[action.payload];
+                {
+                    // const start = levels2[l];
+                    // const end = levels2[l];
+
+                    // return {start, end}
+                }
+            
+
+            default : return {...state};
+        }
+    }
+
+
+    const [state,dispatch] = useReducer(reducer,[]);
+
     const genNum = () => {
         let c = 0;
         if (l === 'one') {
@@ -77,7 +123,7 @@ export default function useArray(l) {
 
         return Math.floor(Math.random()*c);
     }
-    
+
     useEffect(() => {
         let arr = [];
         let i = 0;
@@ -100,10 +146,28 @@ export default function useArray(l) {
             }
         }
         setMass(arr);
-
+        
     },[l]);
+  
+    useEffect(() => {
+        let start = null;
+        let end = null;
+        let arr = null;
+        if(levels2[l]!==undefined) {
+            start = levels2[l].start;
+            end = levels2[l].end;
 
- 
+            start = start.map((elem, index) => ({...elem, order:mass[index]}));
+            arr = {start, end};
+            
+        }
+        console.log(arr);
+
+        if((l !== null || l !== undefined) && arr !== null) {
+            dispatch({type:"FILL" , payload:arr})
+        }
+    },[mass])
+
     useEffect(()=>{
         let c = [];
         if (l) {
@@ -126,7 +190,7 @@ export default function useArray(l) {
         
     }, [mass]);
 
-    return [pic01, lev,setLev,arrRight,setArrRight,levels];
+    return [pic01, lev,setLev,arrRight,setArrRight,levels,state,dispatch];
 }
 
 

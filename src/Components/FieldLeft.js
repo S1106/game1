@@ -1,8 +1,8 @@
-import { useContext } from "react";
+import {useContext} from "react";
 import { global } from "./Context";
 import Card from "./Card";
 
-export default function FieldRight ({end}) {
+export default function FieldLeft({start}) {
 
     const {level} = useContext(global);
 
@@ -11,11 +11,11 @@ export default function FieldRight ({end}) {
             `${t} field_${level}`
         )
     }
-    
-    if(end !== null) {
+
+        if(start !== null) {
         return(
-            <div className = {generateField('field_right')}>                
-                {end.map((elem,index) => <Card 
+            <div className = {generateField('field_left')}>                
+                {start.map((elem,index) => <Card 
                                                 elem = {elem}
                                                 key = {index}
                 />)
@@ -25,4 +25,4 @@ export default function FieldRight ({end}) {
         } else {
             return null;
         }
-    }
+}
