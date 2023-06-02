@@ -1,18 +1,18 @@
 import {react, useContext } from "react";
 import { global } from "./Context";
+import Piece from "./Piece";
 
 export default function Card({elem}) {
-    console.log(elem);
-    const {pic01} = useContext(global)
+    
+    const {pic01,dragStartHandler,dragOverHandler} = useContext(global);
+console.log(elem);
+    if(elem.order !== null) {
     return(
         <div className="field_piece" style = {{order:elem.order}}>
-                <div className="piece"                           
-                        draggable={true} 
-                        style = {{
-                            backgroundImage:`url(${pic01})`,
-                            backgroundPosition: `${elem.left}px ${elem.top}px`,
-                        }}
-                    ></div>
+                <Piece elem={elem}/>
         </div>
     );
+} else {
+    return (<div className="field_piece"></div>)
+}
 }

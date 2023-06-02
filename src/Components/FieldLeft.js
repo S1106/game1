@@ -12,7 +12,7 @@ export default function FieldLeft({start}) {
         )
     }
 
-        if(start !== null) {
+        if(start !== null && start !== undefined) {
         return(
             <div className = {generateField('field_left')}>                
                 {start.map((elem,index) => <Card 

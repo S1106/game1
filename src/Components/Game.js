@@ -8,7 +8,7 @@ import FieldLeft from "./FieldLeft";
 
 export default function Game() {
     
-    const {level,pic01,lev,setLev,arrRight,setArrRight,timer,timerHour,levels,setResultCount,resultCount,currentElem,setCurrentElem,compare,setCompare,setWatch,watch,state} = useContext(global);
+    const {level,pic01,lev,setLev,arrRight,setArrRight,timer,timerHour,setResultCount,resultCount,currentElem,setCurrentElem,compare,setCompare,setWatch,watch,state,finalElem,area,setArea,setFinalElem} = useContext(global);
 
     let start = null;
     let end = null;
@@ -17,12 +17,6 @@ export default function Game() {
        end = state.end;
     }
 
-    // console.dir(start)
-
-    const [finalElem,setFinalElem] = useState(null);
-
-    const [area,setArea] = useState(null);
-    
     function dragStartHandler(e,elem,c) {
         setWatch(elem);
         setCurrentElem(elem);
@@ -58,7 +52,7 @@ export default function Game() {
         }
 
     }
-        // console.log(finalElem)
+  
     function dragLeaveHandler(e) {
         
     }

@@ -9,7 +9,7 @@ export default function useArray(l) {
 
     const [lev , setLev] = useState([]);
 
-    const [arrRight,setArrRight] = useState([]);
+    const [arrRight , setArrRight] = useState([]);
 
     // const [widthPic,setWidthPic] = useState();
 
@@ -20,15 +20,86 @@ export default function useArray(l) {
 
     const levels2 = {
         one: {
-            start: [{ id: 0, left: 0, top:0},
-                    { id: 1, left: -166.84, top:0},
-                    { id: 2, left: 0, top: -166.84},
-                    { id: 3, left: -166.84, top:-166.84}],
+            start: [{ id: 0,  order:0,left: 0, top:0},
+                    { id: 1,  order:1,left: -166.84, top:0},
+                    { id: 2,  order:2,left: 0, top: -166.84},
+                    { id: 3,  order:3,left: -166.84, top:-166.84}],
             end:   [
-                    { id: 0},
-                    { id: 1},
-                    { id: 2},
-                    { id: 3}]
+                    { id: 0, order:null},
+                    { id: 1, order:null},
+                    { id: 2, order:null},
+                    { id: 3, order:null}]
+        },
+
+        two: {
+            start: [
+                { id: 0,  order:0,left: 0, top:0},
+                { id: 1,  order:1,left: -103.00, top:0},
+                { id: 2,  order:2,left: -206.00, top: 0},
+    
+                { id: 3, order:3, left: 0, top: -103.00},
+                { id: 4, order:4, left: -103.00, top: -103.00},
+                { id: 5, order:5, left: -206.00, top: -103.00},
+    
+                { id: 6, order:6, left: 0, top: -206.00},
+                { id: 7, order:7, left: -103.00, top:-206.00},
+                { id: 8, order:8, left: -206.00, top:-206.00}
+            ],
+            end:   [
+                { id: 0, order:null},
+                { id: 1, order:null },
+                { id: 2, order:null },
+    
+                { id: 3, order:null },
+                { id: 4, order:null },
+                { id: 5, order:null },
+    
+                { id: 6, order:null },
+                { id: 7, order:null },
+                { id: 8, order:null }]
+        },
+        three: {
+            start: [
+            { id: 0, order:0, left: 0, top:0},
+            { id: 1, order:1, left: -80.00, top:0},
+            { id: 2, order:2, left: -160.00, top:0},
+            { id: 3, order:3, left: -240.00, top:0},
+
+            { id: 4, order:4, left: 0, top:-80.00},
+            { id: 5, order:5, left: -80.00, top:-80.00},
+            { id: 6, order:6, left: -160.00, top:-80.00},
+            { id: 7, order:7, left: -240.00, top:-80.00},
+
+            { id: 8, order:8, left: 0, top:-160.00},
+            { id: 9, order:9, left: -80.00, top:-160.00},
+            { id: 10, order:10, left: -160.00, top:-160.00},
+            { id: 11, order:11, left: -240.00, top:-160.00},
+
+            { id: 12, order:12, left: 0, top:-240.00},
+            { id: 13, order:13, left: -80.00, top:-240.00},
+            { id: 14, order:14, left: -160.00, top:-240.00},
+            { id: 15, order:15, left: -240.00, top:-240.00}
+            ],
+            end: [
+                { id: 0},
+                { id: 1},
+                { id: 2},
+                { id: 3},
+
+                { id: 4},
+                { id: 5},
+                { id: 6},
+                { id: 7},
+
+                { id: 8},
+                { id: 9},
+                { id: 10},
+                { id: 11},
+
+                { id: 12},
+                { id: 13},
+                { id: 14},
+                { id: 15}]
         }
     }
  
@@ -127,7 +198,7 @@ export default function useArray(l) {
     useEffect(() => {
         let arr = [];
         let i = 0;
-        let c =0;
+        let c = 0;
         if (l === 'one') {
             c = 4;
         }
@@ -171,7 +242,7 @@ export default function useArray(l) {
     useEffect(()=>{
         let c = [];
         if (l) {
-            levels[l].forEach((el, index) => {                      
+            levels2[l].start.forEach((el, index) => {                      
                 c = [...c, {...el, order: mass[index]}]
             })
             setLev(c);
@@ -182,7 +253,7 @@ export default function useArray(l) {
     useEffect(()=>{
         let c = [];
         if (l) {
-            levels[l].forEach((el, index) => {                      
+            levels2[l].end.forEach((el, index) => {                      
                 c = [...c, {id:el.id}]
             })
             setArrRight(c);
@@ -190,7 +261,7 @@ export default function useArray(l) {
         
     }, [mass]);
 
-    return [pic01, lev,setLev,arrRight,setArrRight,levels,state,dispatch];
+    return [pic01, lev,setLev,arrRight,levels,setArrRight,state,dispatch];
 }
 
 

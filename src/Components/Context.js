@@ -5,11 +5,11 @@ export const global = createContext();
 
 export default function Context(props) {
     
-    const [modal,setModal] = React.useState(null); //відкриття та закритя вікна
+    const [modal,setModal] = useState(null); //відкриття та закритя вікна
 
     const [button,setButton] = useState(true); //сховати показати кнопку
 
-    const [level,setLevel] = React.useState(null); // 2 = 4 or 3 = 9 or 4 = 16
+    const [level,setLevel] = useState(null); // 2 = 4 or 3 = 9 or 4 = 16
 
     const [pic01,lev,setLev,arrRight,setArrRight,levels,state,dispatch] = useArray(level);
 
@@ -25,9 +25,9 @@ export default function Context(props) {
 
     const [watch,setWatch] = useState(null);
 
-    // const [timerActive,setTimerActive] = useState(true);
+    const [finalElem,setFinalElem] = useState(null);
 
-    //console.log(state)
+    const [area,setArea] = useState(null);
 
    /////////////////////////BUTTON HIDE - SHOW////////////////////////////////////
 
@@ -93,7 +93,11 @@ export default function Context(props) {
         setCompare,
         setWatch,
         watch,
-        state
+        state,
+        finalElem,
+        area,
+        setArea,
+        setFinalElem     
     }
 
     return (
